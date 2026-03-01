@@ -38,5 +38,5 @@ def home():
     return {
         "message": "Welcome to StockSight AI! 🚀",
         "status":  "Server is running!",
-        "docs":    "Visit http://localhost:8000/docs to see all APIs"
+        "docs": "Visit https://stocksight-backend-ljfa.onrender.com/docs"
     }
