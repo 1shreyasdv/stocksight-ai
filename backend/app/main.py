@@ -31,7 +31,6 @@ app.include_router(insights.router,    prefix="/api/insights",  tags=["AI Insigh
 
 @app.on_event("startup")
 def startup_event():
-    create_tables()
     print("🚀 StockSight AI Server is running!")
 
 @app.get("/")
