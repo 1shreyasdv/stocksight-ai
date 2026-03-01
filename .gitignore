@@ -1,0 +1,15 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment variables (NEVER share these!)
+.env
+*.env
+
+# Node modules (too big to upload)
+node_modules/
+build/
+
+# VS Code
+.vscode/
