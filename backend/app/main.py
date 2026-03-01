@@ -15,7 +15,10 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:3000",  # local React dev
+        "https://stocksight-frontend.onrender.com",  # replace with your real frontend URL later
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
