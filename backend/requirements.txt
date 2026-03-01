@@ -6,8 +6,6 @@ numpy
 scikit-learn
 xgboost
 prophet
-tensorflow
-keras
 nltk
 vaderSentiment
 sqlalchemy
