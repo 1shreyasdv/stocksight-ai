@@ -6,25 +6,17 @@
 
 from pydantic_settings import BaseSettings
 
+
 class Settings(BaseSettings):
     # App settings
     APP_NAME: str = "StockSight AI"
     DEBUG: bool = True
 
-    # MySQL Database settings
-    # Since your password is empty, we leave DB_PASSWORD blank
-    DB_HOST: str = "localhost"
-    DB_PORT: int = 3306
-    DB_USER: str = "root"
-    DB_PASSWORD: str = "shreyas"
-    DB_NAME: str = "stocksight"
-    
-    @property
-    def DATABASE_URL(self) -> str:
-        return f"mysql+pymysql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+    # Production Database URL (comes from Render)
+    DATABASE_URL: str
 
-    # JWT Secret Key — used to create login tokens
-    SECRET_KEY: str = "stocksight-super-secret-key-change-this-later"
+    # JWT
+    SECRET_KEY: str
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24
 
@@ -35,5 +27,5 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
 
-# Create one settings object to use everywhere
+
 settings = Settings()
