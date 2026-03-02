@@ -36,9 +36,10 @@ const Portfolio = () => {
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    if (token) loadPortfolio();
-  }, [token]);
+  if (token) loadPortfolio();
 
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [token]);
   const loadPortfolio = async () => {
     setLoading(true);
     try {
