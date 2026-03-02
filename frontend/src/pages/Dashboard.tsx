@@ -28,10 +28,10 @@ const Dashboard = () => {
   const [period,     setPeriod]     = useState('1y');
 
   useEffect(() => {
-    if (ticker) loadAllData();
-  }, [ticker]);
+  if (ticker) loadAllData();
 
-  const loadAllData = async () => {
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [ticker]);  const loadAllData = async () => {
     setLoading(true);
     try {
       const [overviewData, historyData, sentimentData, newsData] =
