@@ -45,7 +45,7 @@ const Register = () => {
               type="text"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              placeholder="Shreyas"
+              placeholder="Your Full Name"
               className="mt-1 w-full rounded-lg border border-gray-700 bg-gray-900 px-4 py-3 text-white outline-none focus:border-indigo-500"
             />
           </div>

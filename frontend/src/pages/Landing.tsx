@@ -53,6 +53,12 @@ const Landing = () => {
             Portfolio
           </button>
           <button
+            onClick={() => navigate('/portfolio')}
+            className="rounded-lg border border-gray-600 px-4 py-2 text-gray-300 transition hover:text-white"
+          >
+            Login
+          </button>
+          <button
             onClick={() => navigate('/register')}
             className="rounded-lg border border-gray-600 px-4 py-2 text-gray-300 transition hover:text-white"
           >
@@ -186,7 +192,6 @@ const Landing = () => {
       {/* DISCLAIMER */}
       <div className="border-t border-gray-800 px-8 py-6 text-center text-xs text-gray-600">
         ⚠️ This platform is for educational purposes only and does not constitute financial advice.
-        Past performance is not indicative of future results.
       </div>
 
     </div>
