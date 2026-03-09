@@ -13,8 +13,8 @@ import { TrendingUp, ArrowLeft, Brain, Newspaper, Zap } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const Dashboard = () => {
-  const { ticker }  = useParams();
-  const navigate    = useNavigate();
+  const { ticker } = useParams();
+  const navigate = useNavigate();
 
   const [overview,   setOverview]   = useState<any>(null);
   const [history,    setHistory]    = useState<any[]>([]);
@@ -28,16 +28,17 @@ const Dashboard = () => {
   const [period,     setPeriod]     = useState('1y');
 
   useEffect(() => {
-  if (ticker) loadAllData();
+    if (ticker) loadAllData(period);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ticker]);
 
-// eslint-disable-next-line react-hooks/exhaustive-deps
-}, [ticker]);  const loadAllData = async () => {
+  const loadAllData = async (p: string) => {
     setLoading(true);
     try {
       const [overviewData, historyData, sentimentData, newsData] =
         await Promise.all([
           getStockOverview(ticker!),
-          getStockHistory(ticker!, period),
+          getStockHistory(ticker!, p),
           getSentimentScore(ticker!),
           getNewsSentiment(ticker!),
         ]);
@@ -50,6 +51,11 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handlePeriodChange = (p: string) => {
+    setPeriod(p);
+    loadAllData(p);
   };
 
   const loadPrediction = async () => {
@@ -81,13 +87,13 @@ const Dashboard = () => {
   const chartData = [
     ...history.slice(-60).map((h: any) => ({
       date:   h.date,
-      actual: h.close,
+      actual: parseFloat(h.close),
     })),
     ...(prediction?.predictions || []).map((p: any) => ({
       date:      p.date,
-      predicted: p.predicted_price,
-      upper:     p.upper_bound,
-      lower:     p.lower_bound,
+      predicted: parseFloat(p.predicted_price),
+      upper:     parseFloat(p.upper_bound),
+      lower:     parseFloat(p.lower_bound),
     }))
   ];
 
@@ -140,14 +146,12 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-
-            {/* Stats */}
             <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-4">
               {[
-                { label: 'Market Cap',  value: overview.market_cap ? `$${(overview.market_cap/1e9).toFixed(2)}B` : 'N/A' },
-                { label: 'P/E Ratio',   value: overview.pe_ratio?.toFixed(2) ?? 'N/A' },
-                { label: '52W High',    value: `$${overview.week_52_high?.toFixed(2) ?? 'N/A'}` },
-                { label: '52W Low',     value: `$${overview.week_52_low?.toFixed(2) ?? 'N/A'}` },
+                { label: 'Market Cap', value: overview.market_cap ? `$${(overview.market_cap/1e9).toFixed(2)}B` : 'N/A' },
+                { label: 'P/E Ratio',  value: overview.pe_ratio?.toFixed(2) ?? 'N/A' },
+                { label: '52W High',   value: `$${overview.week_52_high?.toFixed(2) ?? 'N/A'}` },
+                { label: '52W Low',    value: `$${overview.week_52_low?.toFixed(2) ?? 'N/A'}` },
               ].map(stat => (
                 <div key={stat.label} className="rounded-lg bg-gray-900 p-3">
                   <div className="text-xs text-gray-400">{stat.label}</div>
@@ -163,7 +167,7 @@ const Dashboard = () => {
           {['1mo','3mo','6mo','1y','2y'].map(p => (
             <button
               key={p}
-              onClick={() => { setPeriod(p); loadAllData(); }}
+              onClick={() => handlePeriodChange(p)}
               className={`rounded-full px-3 py-1 text-sm transition ${
                 period === p ? 'bg-indigo-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white'
               }`}
@@ -193,18 +197,25 @@ const Dashboard = () => {
         {/* CHART TAB */}
         {activeTab === 'chart' && (
           <div className="rounded-xl border border-gray-700 bg-gray-800 p-6">
-            <h2 className="mb-4 text-xl font-bold">Price History</h2>
-            <ResponsiveContainer width="100%" height={400}>
-              <LineChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis dataKey="date" tick={{ fill: '#9ca3af', fontSize: 11 }} tickFormatter={(v) => v.slice(5)} />
-                <YAxis tick={{ fill: '#9ca3af', fontSize: 11 }} />
-                <Tooltip contentStyle={{ background: '#1f2937', border: '1px solid #374151' }} />
-                <Legend />
-                <Line type="monotone" dataKey="actual" stroke="#6366f1" dot={false} strokeWidth={2} name="Actual Price" />
-                <Line type="monotone" dataKey="predicted" stroke="#10b981" dot={false} strokeWidth={2} strokeDasharray="5 5" name="Predicted Price" />
-              </LineChart>
-            </ResponsiveContainer>
+            <h2 className="mb-4 text-xl font-bold">Price History — {ticker}</h2>
+            {chartData.length === 0 ? (
+              <div className="py-12 text-center text-gray-400">No chart data available</div>
+            ) : (
+              <ResponsiveContainer width="100%" height={400}>
+                <LineChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                  <XAxis dataKey="date" tick={{ fill: '#9ca3af', fontSize: 11 }} tickFormatter={(v) => v.slice(5)} />
+                  <YAxis tick={{ fill: '#9ca3af', fontSize: 11 }} domain={['auto', 'auto']} />
+                  <Tooltip contentStyle={{ background: '#1f2937', border: '1px solid #374151' }} />
+                  <Legend />
+                  <Line type="monotone" dataKey="actual" stroke="#6366f1" dot={false} strokeWidth={2} name="Actual Price" connectNulls />
+                  <Line type="monotone" dataKey="predicted" stroke="#10b981" dot={false} strokeWidth={2} strokeDasharray="5 5" name="Predicted Price" connectNulls />
+                </LineChart>
+              </ResponsiveContainer>
+            )}
+            <p className="mt-3 text-center text-xs text-gray-500">
+              💡 Go to <strong>Prediction tab</strong> → click Run Prediction → come back to see predicted prices on chart!
+            </p>
           </div>
         )}
 
@@ -232,7 +243,6 @@ const Dashboard = () => {
                 </button>
               </div>
             </div>
-
             {!prediction ? (
               <div className="py-12 text-center text-gray-400">
                 <Brain size={48} className="mx-auto mb-4 text-gray-600" />
@@ -247,7 +257,6 @@ const Dashboard = () => {
                 }`}>
                   {prediction.verdict}
                 </div>
-
                 <div className="mb-6 grid grid-cols-3 gap-4">
                   {[
                     { label: 'MAE',  value: `$${prediction.accuracy?.mae?.toFixed(2)}` },
@@ -260,7 +269,6 @@ const Dashboard = () => {
                     </div>
                   ))}
                 </div>
-
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
@@ -356,132 +364,34 @@ const Dashboard = () => {
               <div className="rounded-xl border border-gray-700 bg-gray-800 p-12 text-center">
                 <Zap size={48} className="mx-auto mb-4 text-indigo-500" />
                 <h3 className="mb-2 text-xl font-bold">AI Institutional Analysis</h3>
-                <p className="mb-6 text-gray-400">
-                  Get hedge-fund level analysis with technical scores,
-                  probability forecasts and AI confidence ratings!
-                </p>
-                <button
-                  onClick={loadInsights}
-                  className="rounded-xl bg-indigo-600 px-6 py-3 font-semibold transition hover:bg-indigo-700"
-                >
+                <p className="mb-6 text-gray-400">Get hedge-fund level analysis with technical scores, probability forecasts and AI confidence ratings!</p>
+                <button onClick={loadInsights} className="rounded-xl bg-indigo-600 px-6 py-3 font-semibold transition hover:bg-indigo-700">
                   🧠 Run AI Analysis
                 </button>
               </div>
             ) : (
               <>
-                {/* AI Score Card */}
                 <div className="rounded-xl border border-gray-700 bg-gray-800 p-6">
                   <h2 className="mb-4 flex items-center gap-2 text-xl font-bold">
                     <Zap className="text-indigo-500" /> AI Composite Score
                   </h2>
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-6xl font-bold text-indigo-400">
-                        {insights.analysis?.composite?.ai_score}
-                      </div>
+                      <div className="text-6xl font-bold text-indigo-400">{insights.analysis?.composite?.ai_score}</div>
                       <div className="text-gray-400">out of 100</div>
                     </div>
                     <div className={`rounded-xl px-6 py-3 text-3xl font-bold ${
                       insights.analysis?.composite?.rating === 'Strong Buy' ? 'bg-green-900 text-green-400' :
                       insights.analysis?.composite?.rating === 'Buy'        ? 'bg-green-800 text-green-300' :
                       insights.analysis?.composite?.rating === 'Hold'       ? 'bg-yellow-900 text-yellow-400' :
-                      insights.analysis?.composite?.rating === 'Sell'       ? 'bg-red-800 text-red-300' :
                       'bg-red-900 text-red-400'
                     }`}>
                       {insights.analysis?.composite?.rating}
                     </div>
                   </div>
-                  <p className="mt-4 text-sm text-gray-400">
-                    {insights.analysis?.composite?.reasoning}
-                  </p>
+                  <p className="mt-4 text-sm text-gray-400">{insights.analysis?.composite?.reasoning}</p>
                 </div>
-
-                {/* Probability Forecast */}
-                <div className="rounded-xl border border-gray-700 bg-gray-800 p-6">
-                  <h2 className="mb-4 text-xl font-bold">📊 Probability Forecast</h2>
-                  <div className="mb-4 grid grid-cols-3 gap-4">
-                    <div className="rounded-xl bg-green-900 p-4 text-center">
-                      <div className="text-3xl font-bold text-green-400">
-                        {insights.analysis?.forecast?.bullish_probability}%
-                      </div>
-                      <div className="text-green-300">Bullish</div>
-                    </div>
-                    <div className="rounded-xl bg-gray-700 p-4 text-center">
-                      <div className="text-3xl font-bold text-gray-300">
-                        {insights.analysis?.forecast?.neutral_probability}%
-                      </div>
-                      <div className="text-gray-400">Neutral</div>
-                    </div>
-                    <div className="rounded-xl bg-red-900 p-4 text-center">
-                      <div className="text-3xl font-bold text-red-400">
-                        {insights.analysis?.forecast?.bearish_probability}%
-                      </div>
-                      <div className="text-red-300">Bearish</div>
-                    </div>
-                  </div>
-                  <div className="rounded-lg bg-gray-900 p-4">
-                    <div className="mb-1 flex justify-between text-sm">
-                      <span className="text-gray-400">AI Confidence Score</span>
-                      <span className="font-bold text-white">{insights.analysis?.forecast?.confidence_score}/100</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-400">Annual Volatility</span>
-                      <span className="font-bold text-white">{insights.analysis?.forecast?.volatility}%</span>
-                    </div>
-                  </div>
-                  <p className="mt-4 text-sm text-gray-400">{insights.analysis?.forecast?.summary}</p>
-                </div>
-
-                {/* Technical Analysis */}
-                <div className="rounded-xl border border-gray-700 bg-gray-800 p-6">
-                  <h2 className="mb-4 text-xl font-bold">📈 Technical Analysis</h2>
-                  <div className="mb-4 grid grid-cols-2 gap-4 md:grid-cols-4">
-                    {[
-                      { label: 'Trend',          value: insights.analysis?.technical?.trend },
-                      { label: 'Signal Strength', value: `${insights.analysis?.technical?.signal_strength}/10` },
-                      { label: 'RSI',             value: insights.analysis?.technical?.rsi },
-                      { label: 'Volume',          value: insights.analysis?.technical?.volume_trend },
-                    ].map(item => (
-                      <div key={item.label} className="rounded-lg bg-gray-900 p-3">
-                        <div className="text-xs text-gray-400">{item.label}</div>
-                        <div className="font-bold text-white">{item.value}</div>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="space-y-2">
-                    {insights.analysis?.technical?.signals_detected?.map((signal: string, i: number) => (
-                      <div key={i} className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm ${
-                        signal.includes('Bullish') || signal.includes('Above') || signal.includes('Golden')
-                          ? 'bg-green-900 text-green-300'
-                          : signal.includes('Bearish') || signal.includes('Below') || signal.includes('Death') || signal.includes('Overbought')
-                          ? 'bg-red-900 text-red-300'
-                          : 'bg-gray-700 text-gray-300'
-                      }`}>
-                        {signal.includes('Bullish') || signal.includes('Above') || signal.includes('Golden') ? '✅' : '⚠️'} {signal}
-                      </div>
-                    ))}
-                  </div>
-                  <p className="mt-4 text-sm text-gray-400">{insights.analysis?.technical?.explanation}</p>
-                </div>
-
-                {/* Risk Factors */}
-                <div className="rounded-xl border border-gray-700 bg-gray-800 p-6">
-                  <h2 className="mb-4 text-xl font-bold">⚠️ Risk Factors</h2>
-                  <div className="space-y-2">
-                    {insights.risk_factors?.map((risk: string, i: number) => (
-                      <div key={i} className="flex items-center gap-2 rounded-lg bg-gray-900 px-3 py-2 text-sm text-gray-300">
-                        ⚠️ {risk}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Refresh Button */}
-                <button
-                  onClick={loadInsights}
-                  className="w-full rounded-xl bg-indigo-600 py-3 font-semibold transition hover:bg-indigo-700"
-                >
+                <button onClick={loadInsights} className="w-full rounded-xl bg-indigo-600 py-3 font-semibold transition hover:bg-indigo-700">
                   🔄 Refresh Analysis
                 </button>
               </>
@@ -491,7 +401,6 @@ const Dashboard = () => {
 
       </div>
 
-      {/* Disclaimer */}
       <div className="mt-8 border-t border-gray-800 px-8 py-4 text-center text-xs text-gray-600">
         ⚠️ For educational purposes only. Not financial advice.
       </div>
