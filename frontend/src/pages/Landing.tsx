@@ -90,7 +90,6 @@ const Landing = () => {
           indicators for any stock — completely free!
         </p>
 
-        {/* Search Bar */}
         <div className="flex w-full max-w-lg gap-3">
           <div className="flex flex-1 items-center gap-3 rounded-xl border border-gray-700 bg-gray-800 px-4">
             <Search className="text-gray-400" size={20} />
@@ -111,7 +110,6 @@ const Landing = () => {
           </button>
         </div>
 
-        {/* Quick ticker buttons */}
         <div className="mt-4 flex flex-wrap justify-center gap-2">
           {['AAPL', 'TSLA', 'GOOGL', 'MSFT', 'NVDA', 'AMZN', 'META', 'NFLX', 'AMD', 'INTC'].map(ticker => (
             <button
@@ -131,7 +129,6 @@ const Landing = () => {
           <TrendingUp className="text-indigo-500" />
           Trending Stocks
         </h2>
-
         {loading ? (
           <div className="py-8 text-center text-gray-400">Loading trending stocks...</div>
         ) : (
@@ -147,9 +144,7 @@ const Landing = () => {
                 <div className="text-lg font-semibold">
                   ${stock.current_price?.toFixed(2) ?? 'N/A'}
                 </div>
-                <div className={`text-sm font-medium ${
-                  stock.change_percent >= 0 ? 'text-green-400' : 'text-red-400'
-                }`}>
+                <div className={`text-sm font-medium ${stock.change_percent >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                   {stock.change_percent >= 0 ? '▲' : '▼'} {Math.abs(stock.change_percent ?? 0).toFixed(2)}%
                 </div>
               </div>
@@ -158,38 +153,28 @@ const Landing = () => {
         )}
       </div>
 
-      {/* FEATURES SECTION */}
+      {/* FEATURES */}
       <div className="mx-auto max-w-6xl px-8 py-12">
         <h2 className="mb-10 text-center text-2xl font-bold">Why StockSight AI?</h2>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           <div className="rounded-xl border border-gray-700 bg-gray-800 p-6">
             <Brain className="mb-4 text-indigo-500" size={32} />
             <h3 className="mb-2 text-lg font-bold">AI Predictions</h3>
-            <p className="text-sm text-gray-400">
-              Uses Facebook Prophet and XGBoost ML models to predict
-              future stock prices with confidence intervals.
-            </p>
+            <p className="text-sm text-gray-400">Uses Facebook Prophet and XGBoost ML models to predict future stock prices with confidence intervals.</p>
           </div>
           <div className="rounded-xl border border-gray-700 bg-gray-800 p-6">
             <BarChart2 className="mb-4 text-indigo-500" size={32} />
             <h3 className="mb-2 text-lg font-bold">Technical Analysis</h3>
-            <p className="text-sm text-gray-400">
-              RSI, MACD, Bollinger Bands, Moving Averages and more
-              technical indicators calculated automatically.
-            </p>
+            <p className="text-sm text-gray-400">RSI, MACD, Bollinger Bands, Moving Averages and more technical indicators calculated automatically.</p>
           </div>
           <div className="rounded-xl border border-gray-700 bg-gray-800 p-6">
             <Shield className="mb-4 text-indigo-500" size={32} />
             <h3 className="mb-2 text-lg font-bold">Sentiment Analysis</h3>
-            <p className="text-sm text-gray-400">
-              AI reads latest news headlines and tells you if
-              the market sentiment is Bullish or Bearish.
-            </p>
+            <p className="text-sm text-gray-400">AI reads latest news headlines and tells you if the market sentiment is Bullish or Bearish.</p>
           </div>
         </div>
       </div>
 
-      {/* DISCLAIMER */}
       <div className="border-t border-gray-800 px-8 py-6 text-center text-xs text-gray-600">
         ⚠️ This platform is for educational purposes only and does not constitute financial advice.
       </div>
