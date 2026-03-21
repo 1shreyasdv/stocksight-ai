@@ -19,7 +19,6 @@ const UserDashboard = () => {
   const [loadingChart, setLoadingChart] = useState(false);
 
   useEffect(()=>{
-    const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
     if (userData) setUser(JSON.parse(userData));
     loadAllStocks();
