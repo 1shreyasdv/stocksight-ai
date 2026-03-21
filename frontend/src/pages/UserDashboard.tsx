@@ -28,11 +28,13 @@ const UserDashboard = () => {
   useEffect(()=>{ loadChartData(selectedStock); },[selectedStock]);
 
   const loadAllStocks = async () => {
-    const results: any = {};
-    for (const t of TICKERS) {
-      try { results[t] = await getStockOverview(t); } catch {}
-    }
-    setStockData(results);
+    try {
+      const results: any = {};
+      for (const t of TICKERS) {
+        try { results[t] = await getStockOverview(t); } catch {}
+      }
+      setStockData(results);
+    } catch {}
   };
 
   const loadChartData = async (ticker: string) => {
