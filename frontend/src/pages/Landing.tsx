@@ -25,10 +25,7 @@ const Landing = () => {
   }, []);
 
   const handleSearch = () => {
-    if (!search.trim()) {
-      toast.error('Please enter a stock ticker!');
-      return;
-    }
+    if (!search.trim()) { toast.error('Please enter a stock ticker!'); return; }
     navigate(`/dashboard/${search.toUpperCase()}`);
   };
 
@@ -38,112 +35,58 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
-
-      {/* NAVBAR */}
       <nav className="flex items-center justify-between border-b border-gray-800 px-8 py-4">
         <div className="flex items-center gap-2">
           <TrendingUp className="text-indigo-500" size={28} />
           <span className="text-xl font-bold text-white">StockSight AI</span>
         </div>
         <div className="flex gap-4">
-          <button
-            onClick={() => navigate('/portfolio')}
-            className="px-4 py-2 text-gray-300 transition hover:text-white"
-          >
-            Portfolio
-          </button>
-          <button
-            onClick={() => navigate('/portfolio')}
-            className="rounded-lg border border-gray-600 px-4 py-2 text-gray-300 transition hover:text-white"
-          >
-            Login
-          </button>
-          <button
-            onClick={() => navigate('/register')}
-            className="rounded-lg border border-gray-600 px-4 py-2 text-gray-300 transition hover:text-white"
-          >
-            Register
-          </button>
-          <button
-            onClick={() => navigate('/dashboard/AAPL')}
-            className="rounded-lg bg-indigo-600 px-4 py-2 transition hover:bg-indigo-700"
-          >
-            Try Demo
-          </button>
+          <button onClick={() => navigate('/portfolio')} className="px-4 py-2 text-gray-300 transition hover:text-white">Portfolio</button>
+          <button onClick={() => navigate('/login')} className="rounded-lg border border-gray-600 px-4 py-2 text-gray-300 transition hover:text-white">Login</button>
+          <button onClick={() => navigate('/register')} className="rounded-lg border border-gray-600 px-4 py-2 text-gray-300 transition hover:text-white">Register</button>
+          <button onClick={() => navigate('/dashboard/AAPL')} className="rounded-lg bg-indigo-600 px-4 py-2 transition hover:bg-indigo-700">Try Demo</button>
         </div>
       </nav>
 
-      {/* HERO SECTION */}
       <div className="flex flex-col items-center justify-center px-4 py-24 text-center">
         <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-indigo-900 px-4 py-2 text-sm text-indigo-300">
-          <Brain size={16} />
-          AI-Powered Stock Predictions
+          <Brain size={16} /> AI-Powered Stock Predictions
         </div>
-
         <h1 className="mb-6 text-5xl font-bold leading-tight">
-          Predict Stocks with
-          <span className="text-indigo-500"> Artificial Intelligence</span>
+          Predict Stocks with <span className="text-indigo-500"> Artificial Intelligence</span>
         </h1>
-
         <p className="mb-10 max-w-2xl text-xl text-gray-400">
-          Get AI-powered price predictions, sentiment analysis, and technical
-          indicators for any stock — completely free!
+          Get AI-powered price predictions, sentiment analysis, and technical indicators for any stock — completely free!
         </p>
-
         <div className="flex w-full max-w-lg gap-3">
           <div className="flex flex-1 items-center gap-3 rounded-xl border border-gray-700 bg-gray-800 px-4">
             <Search className="text-gray-400" size={20} />
             <input
-              type="text"
-              placeholder="Enter stock ticker (e.g. AAPL, TSLA)"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              onKeyPress={handleKeyPress}
+              type="text" placeholder="Enter stock ticker (e.g. AAPL, TSLA)"
+              value={search} onChange={(e) => setSearch(e.target.value)} onKeyPress={handleKeyPress}
               className="flex-1 bg-transparent py-4 text-white placeholder-gray-500 outline-none"
             />
           </div>
-          <button
-            onClick={handleSearch}
-            className="rounded-xl bg-indigo-600 px-6 py-4 font-semibold transition hover:bg-indigo-700"
-          >
-            Analyze
-          </button>
+          <button onClick={handleSearch} className="rounded-xl bg-indigo-600 px-6 py-4 font-semibold transition hover:bg-indigo-700">Analyze</button>
         </div>
-
         <div className="mt-4 flex flex-wrap justify-center gap-2">
-          {['AAPL', 'TSLA', 'GOOGL', 'MSFT', 'NVDA', 'AMZN', 'META', 'NFLX', 'AMD', 'INTC'].map(ticker => (
-            <button
-              key={ticker}
-              onClick={() => navigate(`/dashboard/${ticker}`)}
-              className="rounded-full bg-gray-800 px-3 py-1 text-sm text-gray-300 transition hover:bg-gray-700"
-            >
-              {ticker}
-            </button>
+          {['AAPL','TSLA','GOOGL','MSFT','NVDA','AMZN','META','NFLX','AMD','INTC'].map(ticker => (
+            <button key={ticker} onClick={() => navigate(`/dashboard/${ticker}`)} className="rounded-full bg-gray-800 px-3 py-1 text-sm text-gray-300 transition hover:bg-gray-700">{ticker}</button>
           ))}
         </div>
       </div>
 
-      {/* TRENDING STOCKS */}
       <div className="mx-auto max-w-6xl px-8 py-12">
-        <h2 className="mb-6 flex items-center gap-2 text-2xl font-bold">
-          <TrendingUp className="text-indigo-500" />
-          Trending Stocks
-        </h2>
+        <h2 className="mb-6 flex items-center gap-2 text-2xl font-bold"><TrendingUp className="text-indigo-500" />Trending Stocks</h2>
         {loading ? (
           <div className="py-8 text-center text-gray-400">Loading trending stocks...</div>
         ) : (
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             {trending.map((stock: any) => (
-              <div
-                key={stock.ticker}
-                onClick={() => navigate(`/dashboard/${stock.ticker}`)}
-                className="cursor-pointer rounded-xl border border-gray-700 bg-gray-800 p-4 transition hover:border-indigo-500"
-              >
+              <div key={stock.ticker} onClick={() => navigate(`/dashboard/${stock.ticker}`)} className="cursor-pointer rounded-xl border border-gray-700 bg-gray-800 p-4 transition hover:border-indigo-500">
                 <div className="font-bold text-white">{stock.ticker}</div>
                 <div className="mb-2 truncate text-sm text-gray-400">{stock.company_name}</div>
-                <div className="text-lg font-semibold">
-                  ${stock.current_price?.toFixed(2) ?? 'N/A'}
-                </div>
+                <div className="text-lg font-semibold">${stock.current_price?.toFixed(2) ?? 'N/A'}</div>
                 <div className={`text-sm font-medium ${stock.change_percent >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                   {stock.change_percent >= 0 ? '▲' : '▼'} {Math.abs(stock.change_percent ?? 0).toFixed(2)}%
                 </div>
@@ -153,7 +96,6 @@ const Landing = () => {
         )}
       </div>
 
-      {/* FEATURES */}
       <div className="mx-auto max-w-6xl px-8 py-12">
         <h2 className="mb-10 text-center text-2xl font-bold">Why StockSight AI?</h2>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -178,7 +120,6 @@ const Landing = () => {
       <div className="border-t border-gray-800 px-8 py-6 text-center text-xs text-gray-600">
         ⚠️ This platform is for educational purposes only and does not constitute financial advice.
       </div>
-
     </div>
   );
 };
