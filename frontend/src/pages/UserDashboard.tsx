@@ -21,7 +21,6 @@ const UserDashboard = () => {
   useEffect(()=>{
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
-    if (!token) { navigate('/login'); return; }
     if (userData) setUser(JSON.parse(userData));
     loadAllStocks();
   // eslint-disable-next-line react-hooks/exhaustive-deps
