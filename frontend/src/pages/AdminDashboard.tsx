@@ -47,7 +47,6 @@ const marketData = [
   {ticker:'META', name:'Meta Platforms',   price:'$524.80',change:'+1.87%',volume:'15.6M',cap:'$1.33T',status:'Active'},
 ];
 
-const S = (style: React.CSSProperties) => style;
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
