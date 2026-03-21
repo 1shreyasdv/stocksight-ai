@@ -24,6 +24,7 @@ const UserDashboard = () => {
     if (!token) { navigate('/login'); return; }
     if (userData) setUser(JSON.parse(userData));
     loadAllStocks();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
   useEffect(()=>{ loadChartData(selectedStock); },[selectedStock]);
