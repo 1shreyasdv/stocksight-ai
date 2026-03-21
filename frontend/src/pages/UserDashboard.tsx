@@ -61,10 +61,15 @@ const UserDashboard = () => {
 
   const loadRealStockData = async () => {
     const results: any = {...MOCK};
-    for (const t of TICKERS.slice(0,10)) {
+    try {
+      // Wake up Render backend first
+      await fetch(`${process.env.REACT_APP_API_BASE_URL}/`);
+    } catch {}
+    
+    for (const t of TICKERS.slice(0,15)) {
       try {
         const data = await getStockOverview(t);
-        if (data) results[t] = data;
+        if (data && data.current_price) results[t] = data;
       } catch {}
     }
     setStockData(results);
