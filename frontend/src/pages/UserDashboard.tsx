@@ -53,7 +53,6 @@ const UserDashboard = () => {
   const [watchlist, setWatchlist] = useState<string[]>(['AAPL','TSLA','NVDA','MSFT','AMZN']);
   const [searchTicker, setSearchTicker] = useState('');
   
-  const [sentimentData, setSentimentData] = useState<any>({});
   const [insightStock, setInsightStock] = useState('AAPL');
   const [insightLoading, setInsightLoading] = useState(false);
   const [insightData, setInsightData] = useState<any>(null);
