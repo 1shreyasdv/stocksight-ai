@@ -41,7 +41,6 @@ const Landing = () => {
           <span className="text-xl font-bold text-white">StockSight AI</span>
         </div>
         <div className="flex gap-4">
-          <button onClick={() => navigate('/portfolio')} className="px-4 py-2 text-gray-300 transition hover:text-white">Portfolio</button>
           <button onClick={() => navigate('/login')} className="rounded-lg border border-gray-600 px-4 py-2 text-gray-300 transition hover:text-white">Login</button>
           <button onClick={() => navigate('/register')} className="rounded-lg border border-gray-600 px-4 py-2 text-gray-300 transition hover:text-white">Register</button>
           <button onClick={() => navigate('/dashboard/AAPL')} className="rounded-lg bg-indigo-600 px-4 py-2 transition hover:bg-indigo-700">Try Demo</button>
