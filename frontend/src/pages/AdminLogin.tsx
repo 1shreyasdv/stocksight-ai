@@ -148,7 +148,7 @@ const AdminLogin = () => {
 
         {/* Footer */}
         <div style={{textAlign:'center',borderTop:'1px solid #f1f5f9',paddingTop:'20px',animation:'fadeUp 0.6s ease-out 0.8s both'}}>
-          <p style={{color:'#94a3b8',fontSize:'0.8rem',margin:'0 0 12px'}}>Default: admin@stocksight.com / admin123</p>
+
           <button className="link-btn2" onClick={()=>navigate('/login')}
             style={{background:'none',border:'none',color:'#94a3b8',fontSize:'0.85rem',cursor:'pointer',transition:'color 0.2s'}}>
             ← Back to User Login
