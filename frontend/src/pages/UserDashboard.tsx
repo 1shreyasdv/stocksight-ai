@@ -45,7 +45,6 @@ const UserDashboard = () => {
   const [orderQty, setOrderQty] = useState('');
   const [orders, setOrders] = useState<any[]>([]);
   const [user, setUser] = useState<any>({full_name:'Trader',email:''});
-  const [stockData, setStockData] = useState<any>(MOCK);
   const [chartData, setChartData] = useState<any[]>([]);
   const [loadingChart, setLoadingChart] = useState(false);
   const [watchlist, setWatchlist] = useState<string[]>(['AAPL','TSLA','NVDA','MSFT','AMZN']);
