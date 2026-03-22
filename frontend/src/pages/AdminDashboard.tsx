@@ -63,13 +63,38 @@ const AdminDashboard = () => {
     return ()=>clearInterval(interval);
   },[navigate]);
 
-  const loadData = () => {
+  const loadData = async () => {
     try {
       const savedUsers = JSON.parse(localStorage.getItem(SHARED_USERS_KEY)||'[]');
       const savedOrders = JSON.parse(localStorage.getItem(SHARED_ORDERS_KEY)||'[]');
       setUsers(savedUsers);
       setOrders(savedOrders);
     } catch {}
+    // Update market prices with slight random changes to simulate live data
+    setMarketPrices((prev: any) => {
+      const updated = {...prev};
+      MARKET_DATA.forEach(m => {
+        const current = parseFloat(updated[m.ticker] || m.price.toString());
+        const change = current * (Math.random() * 0.002 - 0.001);
+        updated[m.ticker] = (current + change).toFixed(2);
+      });
+      return updated;
+    });
+  };
+
+  const generateReport = (title: string, data: any[]) => {
+    if (data.length === 0) { toast.error('No data to export!'); return; }
+    const headers = Object.keys(data[0]).join(',');
+    const rows = data.map(row => Object.values(row).map(v => `"${v}"`).join(',')).join('\n');
+    const csv = headers + '\n' + rows;
+    const blob = new Blob([csv], {type: 'text/csv'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${title.replace(/ /g,'_')}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success(`📥 ${title} downloaded!`);
   };
 
   const toggleFreeze = (email: string) => {
@@ -389,7 +414,7 @@ const AdminDashboard = () => {
               <div style={{fontSize:'32px',marginBottom:'12px'}}>{r.icon}</div>
               <h4 style={{margin:'0 0 8px',color:'white',fontWeight:700}}>{r.title}</h4>
               <p style={{margin:'0 0 16px',color:'#475569',fontSize:'0.85rem'}}>{r.desc}</p>
-              <button onClick={()=>toast.success(`${r.title} downloaded!`)} style={{width:'100%',padding:'8px',borderRadius:'8px',border:`1px solid ${r.color}40`,background:`${r.color}15`,color:r.color,fontWeight:600,cursor:'pointer',fontSize:'0.85rem'}}>
+              <button onClick={()=>generateReport(r.title, r.title==='User Report'?users:r.title==='Trade Report'?orders:r.title==='Orders Report'?orders:MARKET_DATA)} style={{width:'100%',padding:'8px',borderRadius:'8px',border:`1px solid ${r.color}40`,background:`${r.color}15`,color:r.color,fontWeight:600,cursor:'pointer',fontSize:'0.85rem'}}>
                 📥 Download
               </button>
             </div>

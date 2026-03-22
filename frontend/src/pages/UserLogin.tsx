@@ -25,6 +25,17 @@ const UserLogin = () => {
 
   return (
     <div style={{ minHeight:'100vh', display:'flex', background:'linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#0f172a 100%)', fontFamily:"'DM Sans',sans-serif" }}>
+      <style>{`
+        @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+        @keyframes pulse{0%,100%{opacity:0.4}50%{opacity:1}}
+        @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+        @keyframes chartDraw{from{stroke-dashoffset:1000}to{stroke-dashoffset:0}}
+        .inp:focus{border-color:#6366f1!important;box-shadow:0 0 0 3px rgba(99,102,241,0.15)!important}
+        .login-btn{transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1)!important}
+        .login-btn:hover{transform:translateY(-3px) scale(1.02)!important;box-shadow:0 12px 30px rgba(99,102,241,0.5)!important}
+        .link-btn:hover{color:white!important}
+      `}</style>
       {/* LEFT PANEL */}
       <div style={{ flex:1, display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', padding:'60px', position:'relative', overflow:'hidden' }}>
         <div style={{ position:'absolute', inset:0, backgroundImage:'linear-gradient(rgba(99,102,241,0.1) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,0.1) 1px,transparent 1px)', backgroundSize:'50px 50px' }} />
