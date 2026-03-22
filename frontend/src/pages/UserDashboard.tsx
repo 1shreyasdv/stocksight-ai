@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import { getStockOverview, getStockHistory, getNewsSentiment, getSentimentScore } from '../services/api';
 import toast from 'react-hot-toast';
 
@@ -52,12 +52,12 @@ const UserDashboard = () => {
   const [loadingStocks, setLoadingStocks] = useState(true);
   const [watchlist, setWatchlist] = useState<string[]>(['AAPL','TSLA','NVDA','MSFT','AMZN']);
   const [searchTicker, setSearchTicker] = useState('');
-  const [newsData, setNewsData] = useState<any>({});
+  
   const [sentimentData, setSentimentData] = useState<any>({});
   const [insightStock, setInsightStock] = useState('AAPL');
   const [insightLoading, setInsightLoading] = useState(false);
   const [insightData, setInsightData] = useState<any>(null);
-  const tickerRef = useRef<any>(null);
+  
 
   useEffect(()=>{
     try {
