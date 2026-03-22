@@ -19,8 +19,6 @@ function App() {
         <Route path="/admin/login"       element={<AdminLogin />} />
         <Route path="/admin/dashboard"   element={<AdminDashboard />} />
         <Route path="/user/dashboard"    element={<UserDashboard />} />
-        <Route path="/portfolio"         element={<Navigate to="/login" />} />
-        <Route path="/dashboard/:ticker" element={<Navigate to="/login" />} />
         <Route path="*"                  element={<Navigate to="/" />} />
       </Routes>
     </Router>
