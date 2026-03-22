@@ -151,7 +151,7 @@ const UserLogin = () => {
         </button>
 
         {/* Register button */}
-        <button className="link-btn" onClick={()=>navigate('/register')}
+        <button className="link-btn" onClick={()=>{ console.log('going to register'); navigate('/register'); }}
           style={{width:'100%',padding:'14px',borderRadius:'12px',background:'transparent',border:'1px solid rgba(255,255,255,0.1)',color:'#94a3b8',fontSize:'0.95rem',cursor:'pointer',marginBottom:'20px',animation:'fadeUp 0.6s ease-out 0.7s both'}}>
           Don't have an account? Register →
         </button>
