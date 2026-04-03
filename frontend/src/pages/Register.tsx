@@ -20,7 +20,9 @@ const Register = () => {
       toast.success('Account created! Please login.');
       navigate('/login');
     } catch (error: any) {
-      toast.error(error?.response?.data?.detail || 'Registration failed');
+      const detail = error?.response?.data?.detail;
+      const msg = Array.isArray(detail) ? detail[0]?.msg || 'Registration failed' : detail || 'Registration failed';
+      toast.error(msg);
     } finally { setLoading(false); }
   };
 
