@@ -15,12 +15,16 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # TEMPORARY FIX
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "https://stocksight-ai.vercel.app",
+        "*"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 # Register all routes
 app.include_router(auth.router,        prefix="/api/auth",      tags=["Auth"])
 app.include_router(stocks.router,      prefix="/api/stocks",    tags=["Stocks"])

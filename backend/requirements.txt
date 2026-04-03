@@ -18,7 +18,7 @@ python-multipart
 pydantic
 pydantic-settings
 httpx
-celery
+
 redis
 matplotlib
 plotly
