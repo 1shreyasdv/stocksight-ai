@@ -15,7 +15,7 @@ const UserLogin = () => {
     setLoading(true);
     try {
       const data = await loginUser(email, password);
-      localStorage.setItem('token', data.access_token);
+      localStorage.setItem('token', data.token || data.access_token);
       localStorage.setItem('user', JSON.stringify(data.user));
       const users = JSON.parse(localStorage.getItem('stocksight_users')||'[]');
       const exists = users.find((u:any)=>u.email===data.user?.email);
