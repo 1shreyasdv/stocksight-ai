@@ -15,6 +15,7 @@ const UserLogin = () => {
     setLoading(true);
     try {
       const data = await loginUser(email, password);
+      console.log('Login response:', data);  // ADD THIS
       localStorage.setItem('token', data.token || data.access_token);
       localStorage.setItem('user', JSON.stringify(data.user));
       const users = JSON.parse(localStorage.getItem('stocksight_users')||'[]');
