@@ -21,7 +21,9 @@ const UserLogin = () => {
     toast.success('Welcome back!');
     navigate('/user/dashboard');
   } catch (error: any) {
-    toast.error(error?.response?.data?.detail || 'Login failed');
+    const detail = error?.response?.data?.detail;
+    const msg = Array.isArray(detail) ? detail[0]?.msg || 'Login failed' : detail || 'Login failed';
+    toast.error(msg);
   } finally { setLoading(false); }
 };
 
