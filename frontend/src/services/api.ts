@@ -78,17 +78,15 @@ export const getAIInsights = async (ticker: string) => {
 
 // ─── AUTH APIs ───────────────────────────────────────────────
 
-export const registerUser = async (email: string, password: string, fullName: string) => {
-  const username = email.split('@')[0] + Math.floor(Math.random() * 999);
+export const registerUser = async (email: string, password: string, fullName: string, username?: string) => {
   const response = await api.post('/api/auth/register', {
     email,
     password,
     full_name: fullName,
-    username: username
+    username: username || email.split('@')[0] + Math.floor(Math.random() * 999)
   });
   return response.data;
 };
-
 export const loginUser = async (email: string, password: string) => {
   const response = await api.post('/api/auth/login', { email, password });
   return response.data;
