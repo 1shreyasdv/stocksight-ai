@@ -1,20 +1,13 @@
-// ============================================================
-// API.TS — Connects React Frontend to FastAPI Backend
-// ============================================================
-
 import axios from 'axios';
 
 const BASE_URL = 'https://stocksight-backend-ljfa.onrender.com';
 
 const api = axios.create({
   baseURL: BASE_URL,
-  headers: {
-    'Content-Type': 'application/json'
-  }
+  headers: { 'Content-Type': 'application/json' }
 });
 
-// ─── STOCK APIs ──────────────────────────────────────────────
-
+// ── STOCK APIs ────────────────────────────────────────────────
 export const getTrendingStocks = async () => {
   const response = await api.get('/api/stocks/trending');
   return response.data;
@@ -40,8 +33,7 @@ export const getStockIndicators = async (ticker: string) => {
   return response.data;
 };
 
-// ─── PREDICTION APIs ─────────────────────────────────────────
-
+// ── PREDICTION APIs ───────────────────────────────────────────
 export const getPrediction = async (ticker: string, days: number = 30) => {
   const response = await api.get(`/api/predict/${ticker}?days=${days}`);
   return response.data;
@@ -57,8 +49,7 @@ export const getAllModelPredictions = async (ticker: string, days: number = 30) 
   return response.data;
 };
 
-// ─── SENTIMENT APIs ──────────────────────────────────────────
-
+// ── SENTIMENT APIs ────────────────────────────────────────────
 export const getSentimentScore = async (ticker: string) => {
   const response = await api.get(`/api/sentiment/${ticker}/score`);
   return response.data;
@@ -69,31 +60,34 @@ export const getNewsSentiment = async (ticker: string) => {
   return response.data;
 };
 
-// ─── AI INSIGHTS API ─────────────────────────────────────────
-
+// ── AI INSIGHTS API ───────────────────────────────────────────
 export const getAIInsights = async (ticker: string) => {
   const response = await api.get(`/api/insights/${ticker}`);
   return response.data;
 };
 
-// ─── AUTH APIs ───────────────────────────────────────────────
-
-export const registerUser = async (email: string, password: string, fullName: string, username?: string) => {
+// ── AUTH APIs ─────────────────────────────────────────────────
+export const registerUser = async (
+  email: string,
+  password: string,
+  fullName: string,
+  username?: string
+) => {
   const response = await api.post('/api/auth/register', {
     email,
     password,
     full_name: fullName,
-    username: username || email.split('@')[0] + Math.floor(Math.random() * 999)
+    username: username || email.split('@')[0] + Math.floor(Math.random() * 9999),
   });
   return response.data;
 };
+
 export const loginUser = async (email: string, password: string) => {
   const response = await api.post('/api/auth/login', { email, password });
   return response.data;
 };
 
-// ─── PORTFOLIO APIs ──────────────────────────────────────────
-
+// ── PORTFOLIO APIs ────────────────────────────────────────────
 export const getPortfolio = async (token: string) => {
   const response = await api.get('/api/portfolio/', {
     headers: { Authorization: `Bearer ${token}` }
