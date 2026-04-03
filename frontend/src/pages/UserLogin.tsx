@@ -10,20 +10,20 @@ const UserLogin = () => {
   const [loading, setLoading]   = useState(false);
 
   const handleLogin = async () => {
-    if (!email || !password) { toast.error('Fill all fields!'); return; }
-    setLoading(true);
-    try {
-      const data = await loginUser(email, password);
-      const token = data.token || data.access_token;
-      if (!token) { toast.error('Login failed - no token received'); setLoading(false); return; }
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(data.user || {}));
-      toast.success('Welcome back!');
-      navigate('/user/dashboard');
-    } catch (error: any) {
-      toast.error(error?.response?.data?.detail || 'Login failed');
-    } finally { setLoading(false); }
-  };
+  if (!email || !password) { toast.error('Fill all fields!'); return; }
+  setLoading(true);
+  try {
+    const data = await loginUser(email, password);
+    const token = data.access_token || data.token;
+    if (!token) { toast.error('Login failed - no token received'); return; }
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(data.user || {}));
+    toast.success('Welcome back!');
+    navigate('/user/dashboard');
+  } catch (error: any) {
+    toast.error(error?.response?.data?.detail || 'Login failed');
+  } finally { setLoading(false); }
+};
 
   const inp: React.CSSProperties = {
     width: '100%', padding: '14px 16px', borderRadius: '12px',
